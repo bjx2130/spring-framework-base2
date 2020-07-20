@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: spring-cloud-gateway
+  cloud:
+    sentinel:
+      enabled: false #集成sentinel控制台开关
+      filter: 
+        enabled: false
+      transport:
+         dashboard: localhost:8890
+         port: 8890
+                   # 服务启动直接建立心跳连接
+      eager: true  
+    gateway:
+      enabled: true
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        # Add your routes here.
+        - id: sinoLlbWeb
+          uri: http://localhost:8080/
+          predicates:
+            - Path=/web/**
+          filters:
+            - StripPrefix=1
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:7777/sino-auth/.well-known/jwks.json
+            
+            
+            
+
+      
+logging:
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG            

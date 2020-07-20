@@ -1,0 +1,19 @@
+#LoadBalancer配置
+spring:
+  cloud:
+    loadbalancer:
+                  #缓存
+      cache:
+        enabled: false
+        capacity: 256
+        ttl: 35
+                 #健康检查
+      health-check:
+        initial-delay: 0
+        interval: 25s
+#        path: ''
+      retry:
+        enabled: true
+      service-discovery:
+        timeout: ''
+        

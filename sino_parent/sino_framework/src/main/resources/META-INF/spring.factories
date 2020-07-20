@@ -1,0 +1,6 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+ com.sinoframework.web.servlet.config.RestTemplateAutoConfig,\
+ com.sinoframework.web.servlet.config.ArgumentResolverAutoConfig,\
+ com.sinoframework.web.servlet.config.GlobalAutoConfig,\
+ com.sinoframework.web.servlet.config.MybatisAutoConfig,\
+ com.sinoframework.web.servlet.config.SinoWebMvcConfigurer

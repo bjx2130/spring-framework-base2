@@ -1,0 +1,8 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration: 
+          github: 
+            client-id: 308110158@qq.com
+            client-secret: bjx308110

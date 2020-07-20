@@ -1,0 +1,12 @@
+1、pom.xml中引入此模块
+
+		<!-- 依赖模块  sino_framework -->
+		<dependency>
+			<groupId>com.sino</groupId>
+			<artifactId>sino_framework</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		
+		
+自定义功能开启
+	

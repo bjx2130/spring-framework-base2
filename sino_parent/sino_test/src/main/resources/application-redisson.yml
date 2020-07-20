@@ -1,0 +1,24 @@
+#https://github.com/redisson/redisson/wiki/2.-%E9%85%8D%E7%BD%AE%E6%96%B9%E6%B3%95
+#只能配置SingleServerConfig类的属性【官方文档中的一些属性会导致报错】
+# redission配置文件
+
+singleServerConfig:
+  address: "redis://127.0.0.1:6379"
+  database: 0
+  connectionMinimumIdleSize: 2
+  connectionPoolSize: 5
+  subscriptionConnectionMinimumIdleSize: 2
+  subscriptionConnectionPoolSize: 5
+threads: 0
+nettyThreads: 0
+codec: !<org.redisson.codec.JsonJacksonCodec> {}
+"transportMode": "NIO"
+
+
+
+
+# redis
+#spring.redis.database=0
+#spring.redis.host=127.0.0.1
+#spring.redis.port=6379
+#spring.redis.password=

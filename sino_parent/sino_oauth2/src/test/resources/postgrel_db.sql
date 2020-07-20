@@ -1,0 +1,433 @@
+/*
+ Navicat Premium Data Transfer
+
+ Source Server         : 100.11
+ Source Server Type    : PostgreSQL
+ Source Server Version : 100001
+ Source Host           : 192.168.100.11:5432
+ Source Catalog        : test
+ Source Schema         : public
+
+ Target Server Type    : PostgreSQL
+ Target Server Version : 100001
+ File Encoding         : 65001
+
+ Date: 03/07/2020 16:12:32
+*/
+
+
+-- ----------------------------
+-- Sequence structure for acl_class_id_seq
+-- ----------------------------
+DROP SEQUENCE IF EXISTS "public"."acl_class_id_seq";
+CREATE SEQUENCE "public"."acl_class_id_seq" 
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 9223372036854775807
+START 1
+CACHE 1;
+
+-- ----------------------------
+-- Sequence structure for acl_entry_id_seq
+-- ----------------------------
+DROP SEQUENCE IF EXISTS "public"."acl_entry_id_seq";
+CREATE SEQUENCE "public"."acl_entry_id_seq" 
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 9223372036854775807
+START 1
+CACHE 1;
+
+-- ----------------------------
+-- Sequence structure for acl_object_identity_id_seq
+-- ----------------------------
+DROP SEQUENCE IF EXISTS "public"."acl_object_identity_id_seq";
+CREATE SEQUENCE "public"."acl_object_identity_id_seq" 
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 9223372036854775807
+START 1
+CACHE 1;
+
+-- ----------------------------
+-- Sequence structure for acl_sid_id_seq
+-- ----------------------------
+DROP SEQUENCE IF EXISTS "public"."acl_sid_id_seq";
+CREATE SEQUENCE "public"."acl_sid_id_seq" 
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 9223372036854775807
+START 1
+CACHE 1;
+
+-- ----------------------------
+-- Sequence structure for group_members_id_seq
+-- ----------------------------
+DROP SEQUENCE IF EXISTS "public"."group_members_id_seq";
+CREATE SEQUENCE "public"."group_members_id_seq" 
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 9223372036854775807
+START 1
+CACHE 1;
+
+-- ----------------------------
+-- Sequence structure for groups_id_seq
+-- ----------------------------
+DROP SEQUENCE IF EXISTS "public"."groups_id_seq";
+CREATE SEQUENCE "public"."groups_id_seq" 
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 9223372036854775807
+START 1
+CACHE 1;
+
+-- ----------------------------
+-- Sequence structure for sys_user_id_seq
+-- ----------------------------
+DROP SEQUENCE IF EXISTS "public"."sys_user_id_seq";
+CREATE SEQUENCE "public"."sys_user_id_seq" 
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 2147483647
+START 1
+CACHE 1;
+
+-- ----------------------------
+-- Table structure for acl_class
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."acl_class";
+CREATE TABLE "public"."acl_class" (
+  "id" int8 NOT NULL DEFAULT nextval('acl_class_id_seq'::regclass),
+  "class" varchar(100) COLLATE "pg_catalog"."default" NOT NULL
+)
+;
+
+-- ----------------------------
+-- Table structure for acl_entry
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."acl_entry";
+CREATE TABLE "public"."acl_entry" (
+  "id" int8 NOT NULL DEFAULT nextval('acl_entry_id_seq'::regclass),
+  "acl_object_identity" int8 NOT NULL,
+  "ace_order" int4 NOT NULL,
+  "sid" int8 NOT NULL,
+  "mask" int4 NOT NULL,
+  "granting" bool NOT NULL,
+  "audit_success" bool NOT NULL,
+  "audit_failure" bool NOT NULL
+)
+;
+
+-- ----------------------------
+-- Table structure for acl_object_identity
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."acl_object_identity";
+CREATE TABLE "public"."acl_object_identity" (
+  "id" int8 NOT NULL DEFAULT nextval('acl_object_identity_id_seq'::regclass),
+  "object_id_class" int8 NOT NULL,
+  "object_id_identity" varchar(36) COLLATE "pg_catalog"."default" NOT NULL,
+  "parent_object" int8,
+  "owner_sid" int8,
+  "entries_inheriting" bool NOT NULL
+)
+;
+
+-- ----------------------------
+-- Table structure for acl_sid
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."acl_sid";
+CREATE TABLE "public"."acl_sid" (
+  "id" int8 NOT NULL DEFAULT nextval('acl_sid_id_seq'::regclass),
+  "principal" bool NOT NULL,
+  "sid" varchar(100) COLLATE "pg_catalog"."default" NOT NULL
+)
+;
+
+-- ----------------------------
+-- Table structure for authorities
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."authorities";
+CREATE TABLE "public"."authorities" (
+  "username" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
+  "authority" varchar(50) COLLATE "pg_catalog"."default" NOT NULL
+)
+;
+
+-- ----------------------------
+-- Records of authorities
+-- ----------------------------
+INSERT INTO "public"."authorities" VALUES ('admin', 'ROLE_USER');
+
+-- ----------------------------
+-- Table structure for group_authorities
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."group_authorities";
+CREATE TABLE "public"."group_authorities" (
+  "group_id" int8 NOT NULL,
+  "authority" varchar(50) COLLATE "pg_catalog"."default" NOT NULL
+)
+;
+
+-- ----------------------------
+-- Table structure for group_members
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."group_members";
+CREATE TABLE "public"."group_members" (
+  "id" int8 NOT NULL GENERATED BY DEFAULT AS IDENTITY (
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 9223372036854775807
+START 1
+),
+  "username" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
+  "group_id" int8 NOT NULL
+)
+;
+
+-- ----------------------------
+-- Table structure for groups
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."groups";
+CREATE TABLE "public"."groups" (
+  "id" int8 NOT NULL GENERATED BY DEFAULT AS IDENTITY (
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 9223372036854775807
+START 1
+),
+  "group_name" varchar(50) COLLATE "pg_catalog"."default" NOT NULL
+)
+;
+
+-- ----------------------------
+-- Table structure for oauth2_authorized_client
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."oauth2_authorized_client";
+CREATE TABLE "public"."oauth2_authorized_client" (
+  "client_registration_id" varchar(100) COLLATE "pg_catalog"."default" NOT NULL,
+  "principal_name" varchar(200) COLLATE "pg_catalog"."default" NOT NULL,
+  "access_token_type" varchar(100) COLLATE "pg_catalog"."default" NOT NULL,
+  "access_token_value" text COLLATE "pg_catalog"."default" NOT NULL,
+  "access_token_issued_at" timestamp(6) NOT NULL,
+  "access_token_expires_at" timestamp(6) NOT NULL,
+  "access_token_scopes" varchar(1000) COLLATE "pg_catalog"."default" DEFAULT NULL::character varying,
+  "refresh_token_value" text COLLATE "pg_catalog"."default",
+  "refresh_token_issued_at" timestamp(6),
+  "created_at" timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP
+)
+;
+
+-- ----------------------------
+-- Table structure for oauth_client_details
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."oauth_client_details";
+CREATE TABLE "public"."oauth_client_details" (
+  "client_id" varchar(256) COLLATE "pg_catalog"."default" NOT NULL,
+  "resource_ids" varchar(256) COLLATE "pg_catalog"."default",
+  "client_secret" varchar(256) COLLATE "pg_catalog"."default",
+  "scope" varchar(256) COLLATE "pg_catalog"."default",
+  "authorized_grant_types" varchar(256) COLLATE "pg_catalog"."default",
+  "web_server_redirect_uri" varchar(256) COLLATE "pg_catalog"."default",
+  "authorities" varchar(256) COLLATE "pg_catalog"."default",
+  "access_token_validity" int4,
+  "refresh_token_validity" int4,
+  "additional_information" varchar(4096) COLLATE "pg_catalog"."default",
+  "autoapprove" varchar(256) COLLATE "pg_catalog"."default"
+)
+;
+
+-- ----------------------------
+-- Records of oauth_client_details
+-- ----------------------------
+INSERT INTO "oauth_client_details"("client_id", "resource_ids", "client_secret", "scope", "authorized_grant_types", "web_server_redirect_uri", "authorities", "access_token_validity", "refresh_token_validity", "additional_information", "autoapprove") VALUES ('client', NULL, '$2a$10$eJPylJH5RaA47FIGUlyT9OVIy1NvC9l8t377vDgMGkxHsYtnsIVLy', 'app', 'authorization_code', 'http://localhost:9999/resource/login', 'ROLE_USER', NULL, NULL, NULL, 'false');
+INSERT INTO "oauth_client_details"("client_id", "resource_ids", "client_secret", "scope", "authorized_grant_types", "web_server_redirect_uri", "authorities", "access_token_validity", "refresh_token_validity", "additional_information", "autoapprove") VALUES ('ssoclient1', NULL, '$2a$10$eJPylJH5RaA47FIGUlyT9OVIy1NvC9l8t377vDgMGkxHsYtnsIVLy', 'all', 'authorization_code', 'http://localhost:9991/ssoclient1/login', 'ROLE_USER', NULL, NULL, NULL, 'true');
+INSERT INTO "oauth_client_details"("client_id", "resource_ids", "client_secret", "scope", "authorized_grant_types", "web_server_redirect_uri", "authorities", "access_token_validity", "refresh_token_validity", "additional_information", "autoapprove") VALUES ('ssoclient2', NULL, '$2a$10$eJPylJH5RaA47FIGUlyT9OVIy1NvC9l8t377vDgMGkxHsYtnsIVLy', 'all', 'authorization_code', 'http://localhost:9992/ssoclient2/login', 'ROLE_USER', NULL, NULL, NULL, 'true');
+INSERT INTO "oauth_client_details"("client_id", "resource_ids", "client_secret", "scope", "authorized_grant_types", "web_server_redirect_uri", "authorities", "access_token_validity", "refresh_token_validity", "additional_information", "autoapprove") VALUES ('rs1', NULL, '$2a$10$eJPylJH5RaA47FIGUlyT9OVIy1NvC9l8t377vDgMGkxHsYtnsIVLy', 'all', 'authorization_code', 'http://localhost:7777/sino-resource1/resource', 'ROLE_USER', NULL, NULL, NULL, 'true');
+INSERT INTO "oauth_client_details"("client_id", "resource_ids", "client_secret", "scope", "authorized_grant_types", "web_server_redirect_uri", "authorities", "access_token_validity", "refresh_token_validity", "additional_information", "autoapprove") VALUES ('rs2', NULL, '$2a$10$eJPylJH5RaA47FIGUlyT9OVIy1NvC9l8t377vDgMGkxHsYtnsIVLy', 'all', 'authorization_code', 'http://localhost:7777/sino-resource1/resource', 'ROLE_USER', NULL, NULL, NULL, 'true');
+
+
+-- ----------------------------
+-- Table structure for persistent_logins
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."persistent_logins";
+CREATE TABLE "public"."persistent_logins" (
+  "username" varchar(64) COLLATE "pg_catalog"."default" NOT NULL,
+  "series" varchar(64) COLLATE "pg_catalog"."default" NOT NULL,
+  "token" varchar(64) COLLATE "pg_catalog"."default" NOT NULL,
+  "last_used" timestamp(6) NOT NULL
+)
+;
+
+-- ----------------------------
+-- Table structure for sys_user
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."sys_user";
+CREATE TABLE "public"."sys_user" (
+  "id" int4 NOT NULL DEFAULT nextval('sys_user_id_seq'::regclass),
+  "tel" varchar(32) COLLATE "pg_catalog"."default",
+  "name" varchar(32) COLLATE "pg_catalog"."default",
+  "type" varchar(32) COLLATE "pg_catalog"."default",
+  "state" varchar(32) COLLATE "pg_catalog"."default",
+  "info1" varchar(32) COLLATE "pg_catalog"."default",
+  "info2" varchar(32) COLLATE "pg_catalog"."default",
+  "info3" varchar(32) COLLATE "pg_catalog"."default"
+)
+;
+
+-- ----------------------------
+-- Table structure for users
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."users";
+CREATE TABLE "public"."users" (
+  "username" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
+  "password" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+  "enabled" bool NOT NULL
+)
+;
+
+-- ----------------------------
+-- Records of users
+-- ----------------------------
+INSERT INTO "public"."users" VALUES ('admin', '$2a$10$SJKsbyCuo0.Po.8oSoUECOg7IvLlTi7GqoZj2NashgPu0YzMyGeRa', 't');
+
+-- ----------------------------
+-- Alter sequences owned by
+-- ----------------------------
+ALTER SEQUENCE "public"."acl_class_id_seq"
+OWNED BY "public"."acl_class"."id";
+SELECT setval('"public"."acl_class_id_seq"', 2, false);
+ALTER SEQUENCE "public"."acl_entry_id_seq"
+OWNED BY "public"."acl_entry"."id";
+SELECT setval('"public"."acl_entry_id_seq"', 2, false);
+ALTER SEQUENCE "public"."acl_object_identity_id_seq"
+OWNED BY "public"."acl_object_identity"."id";
+SELECT setval('"public"."acl_object_identity_id_seq"', 2, false);
+ALTER SEQUENCE "public"."acl_sid_id_seq"
+OWNED BY "public"."acl_sid"."id";
+SELECT setval('"public"."acl_sid_id_seq"', 2, false);
+ALTER SEQUENCE "public"."group_members_id_seq"
+OWNED BY "public"."group_members"."id";
+SELECT setval('"public"."group_members_id_seq"', 2, false);
+ALTER SEQUENCE "public"."groups_id_seq"
+OWNED BY "public"."groups"."id";
+SELECT setval('"public"."groups_id_seq"', 2, false);
+ALTER SEQUENCE "public"."sys_user_id_seq"
+OWNED BY "public"."sys_user"."id";
+SELECT setval('"public"."sys_user_id_seq"', 2, false);
+
+-- ----------------------------
+-- Uniques structure for table acl_class
+-- ----------------------------
+ALTER TABLE "public"."acl_class" ADD CONSTRAINT "unique_uk_2" UNIQUE ("class");
+
+-- ----------------------------
+-- Primary Key structure for table acl_class
+-- ----------------------------
+ALTER TABLE "public"."acl_class" ADD CONSTRAINT "acl_class_pkey" PRIMARY KEY ("id");
+
+-- ----------------------------
+-- Uniques structure for table acl_entry
+-- ----------------------------
+ALTER TABLE "public"."acl_entry" ADD CONSTRAINT "unique_uk_4" UNIQUE ("acl_object_identity", "ace_order");
+
+-- ----------------------------
+-- Primary Key structure for table acl_entry
+-- ----------------------------
+ALTER TABLE "public"."acl_entry" ADD CONSTRAINT "acl_entry_pkey" PRIMARY KEY ("id");
+
+-- ----------------------------
+-- Uniques structure for table acl_object_identity
+-- ----------------------------
+ALTER TABLE "public"."acl_object_identity" ADD CONSTRAINT "unique_uk_3" UNIQUE ("object_id_class", "object_id_identity");
+
+-- ----------------------------
+-- Primary Key structure for table acl_object_identity
+-- ----------------------------
+ALTER TABLE "public"."acl_object_identity" ADD CONSTRAINT "acl_object_identity_pkey" PRIMARY KEY ("id");
+
+-- ----------------------------
+-- Uniques structure for table acl_sid
+-- ----------------------------
+ALTER TABLE "public"."acl_sid" ADD CONSTRAINT "unique_uk_1" UNIQUE ("sid", "principal");
+
+-- ----------------------------
+-- Primary Key structure for table acl_sid
+-- ----------------------------
+ALTER TABLE "public"."acl_sid" ADD CONSTRAINT "acl_sid_pkey" PRIMARY KEY ("id");
+
+-- ----------------------------
+-- Indexes structure for table authorities
+-- ----------------------------
+CREATE UNIQUE INDEX "ix_auth_username" ON "public"."authorities" USING btree (
+  "username" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST,
+  "authority" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST
+);
+
+-- ----------------------------
+-- Primary Key structure for table group_members
+-- ----------------------------
+ALTER TABLE "public"."group_members" ADD CONSTRAINT "group_members_pkey" PRIMARY KEY ("id");
+
+-- ----------------------------
+-- Primary Key structure for table groups
+-- ----------------------------
+ALTER TABLE "public"."groups" ADD CONSTRAINT "groups_pkey" PRIMARY KEY ("id");
+
+-- ----------------------------
+-- Primary Key structure for table oauth2_authorized_client
+-- ----------------------------
+ALTER TABLE "public"."oauth2_authorized_client" ADD CONSTRAINT "oauth2_authorized_client_pkey" PRIMARY KEY ("client_registration_id", "principal_name");
+
+-- ----------------------------
+-- Primary Key structure for table oauth_client_details
+-- ----------------------------
+ALTER TABLE "public"."oauth_client_details" ADD CONSTRAINT "oauth_client_details_pkey" PRIMARY KEY ("client_id");
+
+-- ----------------------------
+-- Primary Key structure for table persistent_logins
+-- ----------------------------
+ALTER TABLE "public"."persistent_logins" ADD CONSTRAINT "persistent_logins_pkey" PRIMARY KEY ("series");
+
+-- ----------------------------
+-- Uniques structure for table sys_user
+-- ----------------------------
+ALTER TABLE "public"."sys_user" ADD CONSTRAINT "sys_user_tel_key" UNIQUE ("tel");
+
+-- ----------------------------
+-- Primary Key structure for table sys_user
+-- ----------------------------
+ALTER TABLE "public"."sys_user" ADD CONSTRAINT "sys_user_pkey" PRIMARY KEY ("id");
+
+-- ----------------------------
+-- Primary Key structure for table users
+-- ----------------------------
+ALTER TABLE "public"."users" ADD CONSTRAINT "users_pkey" PRIMARY KEY ("username");
+
+-- ----------------------------
+-- Foreign Keys structure for table acl_entry
+-- ----------------------------
+ALTER TABLE "public"."acl_entry" ADD CONSTRAINT "foreign_fk_4" FOREIGN KEY ("acl_object_identity") REFERENCES "public"."acl_object_identity" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "public"."acl_entry" ADD CONSTRAINT "foreign_fk_5" FOREIGN KEY ("sid") REFERENCES "public"."acl_sid" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- ----------------------------
+-- Foreign Keys structure for table acl_object_identity
+-- ----------------------------
+ALTER TABLE "public"."acl_object_identity" ADD CONSTRAINT "foreign_fk_1" FOREIGN KEY ("parent_object") REFERENCES "public"."acl_object_identity" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "public"."acl_object_identity" ADD CONSTRAINT "foreign_fk_2" FOREIGN KEY ("object_id_class") REFERENCES "public"."acl_class" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "public"."acl_object_identity" ADD CONSTRAINT "foreign_fk_3" FOREIGN KEY ("owner_sid") REFERENCES "public"."acl_sid" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- ----------------------------
+-- Foreign Keys structure for table authorities
+-- ----------------------------
+ALTER TABLE "public"."authorities" ADD CONSTRAINT "fk_authorities_users" FOREIGN KEY ("username") REFERENCES "public"."users" ("username") ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- ----------------------------
+-- Foreign Keys structure for table group_authorities
+-- ----------------------------
+ALTER TABLE "public"."group_authorities" ADD CONSTRAINT "fk_group_authorities_group" FOREIGN KEY ("group_id") REFERENCES "public"."groups" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- ----------------------------
+-- Foreign Keys structure for table group_members
+-- ----------------------------
+ALTER TABLE "public"."group_members" ADD CONSTRAINT "fk_group_members_group" FOREIGN KEY ("group_id") REFERENCES "public"."groups" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION;

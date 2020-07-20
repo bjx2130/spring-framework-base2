@@ -1,0 +1,45 @@
+spring: 
+  application:
+    name: sino-auth    
+  profiles:
+     active: redis,postgrel,dev
+  thymeleaf:
+    cache: false
+    encoding: UTF-8
+    mode: HTML5
+    prefix: classpath:/templates/
+    suffix: .html
+###注册中心###
+  cloud:
+    nacos:
+      discovery:
+        enabled: true
+        server-addr: 127.0.0.1:8848
+
+
+    
+server:
+  port: 8888
+  
+
+
+
+
+
+sino:
+  responseControllerAdvice:
+      enabled: false
+  mybatisConfigurationCustomizer:
+      enabled: false
+  paginationInterceptor: 
+      enabled: false     
+
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
+
+
+  

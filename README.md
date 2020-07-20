@@ -45,7 +45,7 @@
 ### sino_test【常用的框架集成demo】
 
 ### sino_oauth2【springSecurity认证服务器】
-### sino_resource【springSecurity资源服务器】
-### sino_ssoclient1【springSecurity单点登录子系统1】
-### sino_ssoclient2【springSecurity单点登录子系统2】
+### sino_resource1【资源服务器1，用于测试】
+### sino_resource2【资源服务器2，用于测试】
+
 	

@@ -124,7 +124,8 @@
 		<module>sino_gateway</module>
 		<module>sino_model</module>
 		<module>sino_oauth2</module>
-		<module>sino_resource</module>
+		<module>sino_resource1</module>
+		<module>sino_resource2</module>
 		<module>sino_test</module>
 	</modules>
 	

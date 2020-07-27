@@ -48,4 +48,6 @@
 ### sino_resource1【资源服务器1，用于测试】
 ### sino_resource2【资源服务器2，用于测试】
 
+### 参考地址：https://github.com/tanjiancheng/alibaba-sentinel-dashboard-nacos
+
 	

@@ -40,7 +40,7 @@ public class ResServerConfig extends ResourceServerConfigurerAdapter {
 	@Override
 	public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
 		resources.tokenServices(tokenServices)
-			.stateless(true);;
+			.stateless(true);
 	}
 	
 	/**

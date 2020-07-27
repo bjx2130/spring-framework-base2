@@ -1,0 +1,26 @@
+  spring:
+    cloud:
+                  # 使用 Sentinel 作为熔断器
+      sentinel:
+        transport:
+          port: 8721
+          dashboard: 127.0.0.1:8080
+        datasource:
+          #1，sentinel数据源连接nacos  ds1为数据源的名称，可以随便写 ,  限流配置
+          ds1:
+            nacos:
+              #nacos地址
+              server-addr: ${spring.cloud.nacos.discovery.server-addr}
+              rule-type: flow 
+              dataId: ${spring.application.name}-sentinel-flow
+              groupId: DEFAULT_GROUP
+              data-type: json
+          #2，sentinel  ,熔断降级配置    
+          ds2:
+            nacos:
+              #nacos地址
+              server-addr: ${spring.cloud.nacos.discovery.server-addr}
+              rule-type: degrade 
+              dataId: ${spring.application.name}-sentinel-degrade
+              groupId: DEFAULT_GROUP
+              data-type: json

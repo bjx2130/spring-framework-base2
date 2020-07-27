@@ -47,7 +47,7 @@ public class TestController {
 //		String prodJson =  restTemplate.getForObject(url, String.class);
 //		System.out.println(prodJson);
 		
-		return this.sentineTestService.sayHello("你好");
+		return "熔断测试";
 	}
 	
 

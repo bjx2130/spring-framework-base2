@@ -17,15 +17,18 @@ import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import com.alibaba.cloud.sentinel.annotation.SentinelRestTemplate;
 import com.sinoframework.web.servlet.interceptor.resttemplate.MixLoadBalancerInterceptor;
+import com.sinoframework.web.servlet.util.ExceptionUtil;
 
 @Configuration
 public class RestTemplateAutoConfig {
 	private static final Logger log = LoggerFactory.getLogger(RestTemplateAutoConfig.class);
 	
 	
-	@LoadBalanced
 	@Bean
+	@LoadBalanced
+	@SentinelRestTemplate(fallback = "fallback", fallbackClass = ExceptionUtil.class, blockHandler="handleException",blockHandlerClass=ExceptionUtil.class)
 	public RestTemplate restTemplate() {
 		log.info("启用【RestTemplate 实例】");
 		return new RestTemplate();

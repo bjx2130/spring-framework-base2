@@ -40,8 +40,7 @@ public class NacosConfig {
     public ConfigService nacosConfigService() throws Exception {
         Properties properties = new Properties();
         properties.put(PropertyKeyConst.SERVER_ADDR, "localhost");
-		// properties.put(PropertyKeyConst.NAMESPACE,
-		// "1cdc1de8-a9c8-4cf2-8998-8a92c59f8c50");
+		// properties.put(PropertyKeyConst.NAMESPACE,"1cdc1de8-a9c8-4cf2-8998-8a92c59f8c50");
         return ConfigFactory.createConfigService(properties);
     }
 }

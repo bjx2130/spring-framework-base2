@@ -20,7 +20,15 @@ public class MybatisAutoConfig {
 	private static final Logger log = LoggerFactory.getLogger(MybatisAutoConfig.class);
 	
 	/**
-	 * 注意：如果配置 mybatis.configLocation 【会导致ConfigurationCustomizer接口的实现失效】
+	 * 	注意：如果配置 mybatis.configLocation 【会导致ConfigurationCustomizer接口的实现失效】
+	 * 
+	 * 		#  扫描数据持久对应的实体类 路径 Package级别
+	 *		mybatis-plus.type-aliases-package=com.sino.llb.entity;com.sino.llb.vo
+	 *		#mybatis 对应的 .xml文件路径
+	 *		mybatis-plus.mapper-locations=classpath:com/sino/llb/dao/*.xml
+	 * 
+	 * 
+	 *  	配置文档参考：https://mp.baomidou.com/config/#%E5%9F%BA%E6%9C%AC%E9%85%8D%E7%BD%AE
 	 * @param mybatisPro
 	 * @return
 	 */

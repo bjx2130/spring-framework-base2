@@ -67,9 +67,9 @@ public class RestTemplateAutoConfig {
             for (RestTemplate restTemplate : restTemplates) {
                 List<ClientHttpRequestInterceptor> list = new ArrayList<>(restTemplate.getInterceptors());
                 list.add(mixLoadBalancerInterceptor);
-                
                 //设置拦截器
                 restTemplate.setInterceptors(list);
+                
                 //替换默认StringHttpMessageConverter转换器编码为utf-8
                 restTemplate.getMessageConverters().set(1, stringHttpMessageConverter_Utf8);
             }

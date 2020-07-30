@@ -5,6 +5,7 @@ import java.net.URI;
  
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.PriorityOrdered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.StreamingHttpOutputMessage;
@@ -16,6 +17,9 @@ import org.springframework.util.StreamUtils;
  * @LoadBalanced 支持ip、域名、服务名 调用
  * 	如果想支持其他的域名格式，可以在application.properties中增加配置项
 	mix.loadbalancer.additional.regex=.*\\.(int|mil)
+	
+	
+	PriorityOrdered 拦截器排序接口
 	
  * @author Administrator
  *

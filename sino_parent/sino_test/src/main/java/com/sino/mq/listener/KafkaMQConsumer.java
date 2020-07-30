@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 import com.github.houbb.heaven.util.util.Optional;
 
-@Component
+//@Component
 public class KafkaMQConsumer {
 	
 	private static final Logger log = LogManager.getLogger();

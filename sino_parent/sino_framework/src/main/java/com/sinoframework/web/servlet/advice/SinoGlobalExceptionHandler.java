@@ -2,6 +2,10 @@ package com.sinoframework.web.servlet.advice;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -14,6 +18,7 @@ import com.sinoframework.web.servlet.bean.SinoFailRuntimeException;
  * 全局异常捕获处理
  * ExceptionHandlerExceptionResolver类 的initExceptionHandlerAdviceCache()方法会扫描@ControllerAdvice注解
  * 
+ * ResponseEntity一定不能添加泛型，否则会被ResponseControllerAdvice 类在把返回值包装一次
  * 
  */
 @RestControllerAdvice
@@ -34,10 +39,12 @@ public class SinoGlobalExceptionHandler {
      * @return
      */
     @ExceptionHandler(value = SinoFailRuntimeException.class)
-    public ResponseResult errorHandler(Exception ex) {
+    public ResponseEntity errorHandler(Exception ex) {
     	
     	this.printSinoStak(ex);
-    	return Response.makeOKRsp(ex.getMessage());
+    	HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE);
+        return new ResponseEntity<>(Response.makeOKRsp(ex.getMessage()),headers, HttpStatus.OK);
     }
 
     /**
@@ -46,9 +53,12 @@ public class SinoGlobalExceptionHandler {
      * @return
      */
     @ExceptionHandler(value = ExtIterApiRuntimeException.class)
-    public ResponseResult extIterHandler(Exception ex) {
+    public ResponseEntity extIterHandler(Exception ex) {
     	this.printSinoStak(ex);
-    	return Response.makeExtIterApiRsp(); 
+    	
+    	HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE);
+        return new ResponseEntity<>(Response.makeExtIterApiRsp(),headers, HttpStatus.OK);
     }
     
     
@@ -58,10 +68,20 @@ public class SinoGlobalExceptionHandler {
      * @return
      */
     @ExceptionHandler(value = {Exception.class})
-    public ResponseResult allExceptionHandler(Exception ex){
-    	this.printSinoStak(ex);
-        return Response.makeErrotRsp(); 
+    public ResponseEntity allExceptionHandler(Exception ex){
+    	  this.printSinoStak(ex);
+	      HttpHeaders headers = new HttpHeaders();
+	      headers.add("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE);
+	      return new ResponseEntity<>(Response.makeErrotRsp(),headers, HttpStatus.OK);
+    	
     }
+    
+    
+//    public ResponseEntity<ResponseBean> exceptionHandler(Exception e, HttpServletResponse response) throws IOException {
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.add("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE);
+//        return new ResponseEntity<>(ResponseBean.error(e.getMessage()),headers, HttpStatus.OK);
+//    }
     
     
     

@@ -13,13 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
-import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.util.concurrent.RateLimiter;
 import com.sino.dao.ProductDao;
-import com.sino.fallback.FallbackHandler;
 import com.sino.service.SentineTestService;
 import com.sino.vo.Product;
 
@@ -38,20 +36,39 @@ public class TestController {
 	private SentineTestService sentineTestService;
 	
 	
-	
+	/**
+	 * 	根据响应时间熔断，测试
+	 * @return
+	 */
 	@ResponseBody
-	@RequestMapping(value="test",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public String g() {
-		
-//		String url = "http://localhost:9090/getProduct/928137";
-//		String prodJson =  restTemplate.getForObject(url, String.class);
-//		System.out.println(prodJson);
-		
-		return "熔断测试";
+	@RequestMapping(value="testRt",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public String testRt() {
+		String url = "http://sinoTest/testRt";
+		String prodJson =  restTemplate.getForObject(url, String.class);
+		log.info(">>>>>>>>>>"+prodJson);
+		return prodJson;
 	}
 	
 
-	
+	/**
+	 * 
+	 * 	资源名								降级模式	阈值		时间窗口(s)	
+		GET:http://sinoTest/notExist	异常比例	0.2	  	5s
+	 * 
+	 * 	异常比例熔断，测试
+	 *   	 比如访问一个不存在的地址
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="testExpRatio",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public String testExpRatio() {
+		
+		//不存在的地址
+		String url = "http://sinoTest/notExist";
+		String prodJson =  restTemplate.getForObject(url, String.class);
+		log.info(">>>>>>>>>>"+prodJson);
+		return prodJson;
+	}	
 	
 	
 	

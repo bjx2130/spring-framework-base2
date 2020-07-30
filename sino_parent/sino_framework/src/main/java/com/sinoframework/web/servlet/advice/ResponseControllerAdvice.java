@@ -2,9 +2,9 @@ package com.sinoframework.web.servlet.advice;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
@@ -32,7 +32,7 @@ public class ResponseControllerAdvice implements ResponseBodyAdvice<Object> {
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> aClass) {
         // 如果接口返回的类型本身就是ResultVO那就没有必要进行额外的操作，返回false
-        return !returnType.getGenericParameterType().equals(ResponseResult.class);
+        return !(returnType.getGenericParameterType().equals(ResponseResult.class)||returnType.getGenericParameterType().equals(ResponseEntity.class));
     }
 
     @Override

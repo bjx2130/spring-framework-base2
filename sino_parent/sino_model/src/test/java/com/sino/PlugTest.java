@@ -1,16 +1,33 @@
 package com.sino;
 
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import com.sino.dao.ProductDao;
 
 
 @SpringBootTest
 @AutoConfigureMockMvc
 class PlugTest {
-//	WebSecurityConfigurerAdapter
-//	 @Autowired
-//	 private BlorderDao blorderDao;
-//	
+	
+	 @Autowired
+	 private ProductDao blorderDao;
+	
+	 @Test
+	 void returnMap() {
+		 
+		 List<?> list = this.blorderDao.queryList("", 1);
+		 System.out.println(list);
+		 
+	 }
+	 
+	 
+	 
+	 
 //	@Test
 //	void test() {
 //		

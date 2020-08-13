@@ -1,8 +1,6 @@
 package com.sinoframework.web.servlet.config;
 
 import org.apache.ibatis.type.JdbcType;
-import org.mybatis.spring.boot.autoconfigure.ConfigurationCustomizer;
-import org.mybatis.spring.boot.autoconfigure.MybatisProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +8,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.baomidou.mybatisplus.autoconfigure.ConfigurationCustomizer;
+import com.baomidou.mybatisplus.autoconfigure.MybatisPlusProperties;
 import com.baomidou.mybatisplus.extension.MybatisMapWrapperFactory;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.pagination.optimize.JsqlParserCountOptimize;
@@ -20,7 +20,7 @@ public class MybatisAutoConfig {
 	private static final Logger log = LoggerFactory.getLogger(MybatisAutoConfig.class);
 	
 	/**
-	 * 	注意：如果配置 mybatis.configLocation 【会导致ConfigurationCustomizer接口的实现失效】
+	 * 	注意：如果配置 mybatis-plus.configLocation 【会导致ConfigurationCustomizer接口的实现失效】
 	 * 
 	 * 		#  扫描数据持久对应的实体类 路径 Package级别
 	 *		mybatis-plus.type-aliases-package=com.sino.llb.entity;com.sino.llb.vo
@@ -34,7 +34,7 @@ public class MybatisAutoConfig {
 	 */
 	@Bean
 	@ConditionalOnProperty(prefix = "sino.mybatisConfigurationCustomizer", value = "enabled", matchIfMissing = true)
-	public ConfigurationCustomizer mybatisConfigurationCustomizer(@Autowired MybatisProperties mybatisPro){
+	public ConfigurationCustomizer mybatisConfigurationCustomizer(@Autowired MybatisPlusProperties mybatisPro){
 		//
 		if(mybatisPro.getConfigLocation()!=null) {
 			return null;
@@ -42,10 +42,11 @@ public class MybatisAutoConfig {
 		
 		log.info("启用：mybatis 驼峰命名规则自动转换");
 		log.info("启用：mybatis MybatisMapWrapper包装类");
+		/** 此处配置优先级高于properties中的配置*/
 		return (configuration)->{
 			configuration.setCallSettersOnNulls(true);
 			configuration.setJdbcTypeForNull(JdbcType.NULL);
-        	configuration.setMapUnderscoreToCamelCase(true);//设置驼峰命名规则  
+//        	configuration.setMapUnderscoreToCamelCase(false);//设置驼峰命名规则  
         	configuration.setObjectWrapperFactory(new MybatisMapWrapperFactory());
 		};
 	}

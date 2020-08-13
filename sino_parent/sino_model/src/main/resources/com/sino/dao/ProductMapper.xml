@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.sino.dao.ProductDao">  
+
+	<select id="queryList" resultType="map">
+		
+			SELECT 
+				pd.*
+			FROM t_product pd  LEFT JOIN t_ctg_pd cp ON pd.pd_id = cp.pd_id AND cp.ctg_id = #{ctgId}
+					WHERE concat(pd_name,',',pd_code,',',pd_title,',',pd_desc) like concat('%',#{keywords},'%') 
+			order by cp.ctg_id ,pd_id DESC
+	
+	</select>	
+	
+	
+</mapper>

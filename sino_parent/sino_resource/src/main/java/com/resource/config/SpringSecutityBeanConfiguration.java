@@ -89,6 +89,7 @@ public class SpringSecutityBeanConfiguration {
     	
     	return new AuthenticationEntryPoint() {
     		
+			@SuppressWarnings({ "unchecked", "rawtypes" })
 			@Override
 			public void commence(HttpServletRequest request, HttpServletResponse response,
 					AuthenticationException authException) throws IOException, ServletException {
@@ -98,14 +99,11 @@ public class SpringSecutityBeanConfiguration {
 				httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 				
 				for (HttpMessageConverter messageConverter : messageConverters) {
-					System.out.println(messageConverter);
 					if (messageConverter.canWrite(res.getClass(), MediaType.APPLICATION_JSON)) {
-						
 						messageConverter.write(res, 
 								MediaType.APPLICATION_JSON, 
 								new HttpServletResponseHttpOutputMessage(httpHeaders,response));
 						
-						System.out.println("==========================="+messageConverter);
 						return;
 					}
 				}

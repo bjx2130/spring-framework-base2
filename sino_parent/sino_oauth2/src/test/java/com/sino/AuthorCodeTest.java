@@ -8,13 +8,13 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-class OauthTest {
+class AuthorCodeTest {
 	
 	private OkHttpClient client = new OkHttpClient();
 	
 	@Test
 	void test() throws Exception {
-		String code = "kLaldh";
+		String code = "5sF4JF";
 //		添加header: Authorization:Basic 编码(client:secret)
 		String authorization=String.format("Basic %s", Base64Utils.encodeToString("rs1:secret".getBytes()));
 		

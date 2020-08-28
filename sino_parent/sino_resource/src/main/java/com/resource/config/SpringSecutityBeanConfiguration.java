@@ -1,15 +1,31 @@
 package com.resource.config;
 
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
+import org.springframework.security.web.AuthenticationEntryPoint;
+
+import com.sinoframework.web.servlet.bean.Response;
+import com.sinoframework.web.servlet.bean.ResponseResult;
+import com.sinoframework.web.servlet.security.HttpServletResponseHttpOutputMessage;
 
 
 @Configuration
@@ -65,6 +81,39 @@ public class SpringSecutityBeanConfiguration {
         //refresh_token有效期，设置一周
         tokenServices.setRefreshTokenValiditySeconds(7 * 24 * 60 * 60);
         return tokenServices;
+    }
+    
+    
+    @Bean
+    public AuthenticationEntryPoint authenticationEntryPoint(@Autowired List<HttpMessageConverter<?>> messageConverters) {
+    	
+    	return new AuthenticationEntryPoint() {
+    		
+			@Override
+			public void commence(HttpServletRequest request, HttpServletResponse response,
+					AuthenticationException authException) throws IOException, ServletException {
+				
+				ResponseResult<String>  res = Response.makeUnauthorized(authException.getMessage());
+				HttpHeaders httpHeaders = new HttpHeaders();
+				httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+				
+				for (HttpMessageConverter messageConverter : messageConverters) {
+					System.out.println(messageConverter);
+					if (messageConverter.canWrite(res.getClass(), MediaType.APPLICATION_JSON)) {
+						
+						messageConverter.write(res, 
+								MediaType.APPLICATION_JSON, 
+								new HttpServletResponseHttpOutputMessage(httpHeaders,response));
+						
+						System.out.println("==========================="+messageConverter);
+						return;
+					}
+				}
+				
+				
+			}
+    		
+    	};
     }
     
     

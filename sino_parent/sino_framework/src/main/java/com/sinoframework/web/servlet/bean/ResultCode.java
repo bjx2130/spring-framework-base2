@@ -8,7 +8,9 @@ public enum ResultCode{
     
     EXTITER_API_ERROR(5003, "外部接口异常"),
 	
-	FAIL(4003,"拒绝请求");
+	FAIL(4003,"拒绝请求"),
+	
+	UNAUTHORIZED(4001,"未经授权");
 	
     private int code;
     private String msg;

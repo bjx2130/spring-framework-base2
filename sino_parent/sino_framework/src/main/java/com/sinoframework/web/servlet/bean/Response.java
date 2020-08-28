@@ -26,6 +26,10 @@ public class Response {
         return new ResponseResult<T>(ResultCode.ERROR);
     } 
     
+    public static <T> ResponseResult<T> makeUnauthorized(T data) {
+        return new ResponseResult<T>(ResultCode.UNAUTHORIZED,data);
+    }
+    
     
     
     public static <T> ResponseResult<T> makeOKRsp(T data) {

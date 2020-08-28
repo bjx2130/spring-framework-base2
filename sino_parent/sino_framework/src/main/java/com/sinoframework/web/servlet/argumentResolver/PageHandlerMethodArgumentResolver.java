@@ -84,34 +84,34 @@ public class PageHandlerMethodArgumentResolver implements HandlerMethodArgumentR
 	@Override
 	public IPage resolveArgument(MethodParameter methodParameter, ModelAndViewContainer mavContainer,
 			NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-		IPage defaultOrFallback = getDefaultFromAnnotationOrFallback(methodParameter);
-
+		IPage<?> defaultOrFallback = DEFAULT_PAGE_REQUEST;
+		
+		Page<?> _page = new Page(0,-1);
+		
 		String pageString = webRequest.getParameter(getParameterNameToUse(pageParameterName, methodParameter));
 		String pageSizeString = webRequest.getParameter(getParameterNameToUse(sizeParameterName, methodParameter));
 
 		boolean pageAndSizeGiven = StringUtils.hasText(pageString) && StringUtils.hasText(pageSizeString);
-
-		if (!pageAndSizeGiven && defaultOrFallback == null) {
+		List<OrderItem> sortList = sortResolver.resolveArgument(methodParameter, mavContainer, webRequest, binderFactory);
+		
+		
+		if (!pageAndSizeGiven && sortList.size()==0) {
 			return null;
 		}
 
-		long page = StringUtils.hasText(pageString) ? parseAndApplyBoundaries(pageString, Integer.MAX_VALUE, true)
-				: defaultOrFallback.getCurrent();
-		long pageSize = StringUtils.hasText(pageSizeString) ? parseAndApplyBoundaries(pageSizeString, maxPageSize, false)
-				: defaultOrFallback.getSize();
-
-		// Limit lower bound
-//		pageSize = pageSize < 1 ? defaultOrFallback.getSize() : pageSize;
-		// Limit upper bound
-		pageSize = pageSize > maxPageSize ? maxPageSize : pageSize;
-		
-		List<OrderItem> sortList = sortResolver.resolveArgument(methodParameter, mavContainer, webRequest, binderFactory);
-
-		// Default if necessary and default configured
-//		sort = sort == null && defaultOrFallback != null ? defaultOrFallback.getSort() : sort;
-		
-		Page _page = new Page(page, pageSize);
-		_page.addOrder(sortList);
+		if(pageAndSizeGiven) {
+			long page = StringUtils.hasText(pageString) ? parseAndApplyBoundaries(pageString, Integer.MAX_VALUE, true)
+					: defaultOrFallback.getCurrent();
+			long pageSize = StringUtils.hasText(pageSizeString) ? parseAndApplyBoundaries(pageSizeString, maxPageSize, false)
+					: defaultOrFallback.getSize();
+			pageSize = pageSize > maxPageSize ? maxPageSize : pageSize;
+			
+			_page.setPages(page);
+			_page.setSize(pageSize);
+		}
+		if(sortList.size()>0) {
+			_page.addOrder(sortList);
+		}
 		return _page;
 	}
 

@@ -23,6 +23,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import com.sinoframework.web.servlet.argumentResolver.ListArgumentResolver;
 import com.sinoframework.web.servlet.argumentResolver.PageHandlerMethodArgumentResolver;
+import com.sinoframework.web.servlet.argumentResolver.SortHandlerMethodArgumentResolver;
 
 /**
  * 接收参数处理器

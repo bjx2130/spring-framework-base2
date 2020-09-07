@@ -72,7 +72,7 @@ public class SinoGlobalExceptionHandler {
     	  this.printSinoStak(ex);
 	      HttpHeaders headers = new HttpHeaders();
 	      headers.add("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE);
-	      return new ResponseEntity<>(Response.makeErrotRsp(),headers, HttpStatus.OK);
+	      return new ResponseEntity<>(Response.makeErrotRsp(),headers, HttpStatus.INTERNAL_SERVER_ERROR);
     	
     }
     

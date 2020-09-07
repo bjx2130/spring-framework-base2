@@ -1,13 +1,14 @@
 package com.sino;
 
-import java.util.List;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sino.dao.ProductDao;
+import com.sino.vo.Product;
 
 
 @SpringBootTest
@@ -20,9 +21,10 @@ class PlugTest {
 	 @Test
 	 void returnMap() {
 		 
-		 List<?> list = this.blorderDao.queryList("", 1);
-		 System.out.println(list);
-		 
+//		 List<?> list = this.blorderDao.queryList("", 1);
+//		 System.out.println(list);
+		 LambdaQueryWrapper<Product> queryWrapper = new LambdaQueryWrapper<>();
+		 this.blorderDao.selectPage(new Page<Product>(0,-1), queryWrapper);
 	 }
 	 
 	 

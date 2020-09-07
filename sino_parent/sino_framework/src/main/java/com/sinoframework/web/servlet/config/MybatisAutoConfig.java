@@ -44,9 +44,11 @@ public class MybatisAutoConfig {
 		log.info("启用：mybatis MybatisMapWrapper包装类");
 		/** 此处配置优先级高于properties中的配置*/
 		return (configuration)->{
+			
+			//默认配置类 MybatisXMLConfigBuilder
 			configuration.setCallSettersOnNulls(true);
-			configuration.setJdbcTypeForNull(JdbcType.NULL);
-//        	configuration.setMapUnderscoreToCamelCase(false);//设置驼峰命名规则  
+			configuration.setJdbcTypeForNull(JdbcType.NULL);//oracle数据库需配置JdbcType.NULL, 默认是Other
+        	configuration.setMapUnderscoreToCamelCase(true);//设置驼峰命名规则  ,默认是true
         	configuration.setObjectWrapperFactory(new MybatisMapWrapperFactory());
 		};
 	}
